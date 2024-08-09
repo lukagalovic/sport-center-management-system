@@ -4,7 +4,6 @@ import { UpdateSportDto } from './dto/update-sport.dto';
 import { EntityManager, Repository } from 'typeorm';
 import { Sport } from './entities/sport.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { PatchUpdateSportDto } from './dto/patch-update-sport.dto';
 
 @Injectable()
 export class SportsService {
@@ -27,11 +26,15 @@ export class SportsService {
     return await this.sportsRepository.findOneBy({ id });
   }
 
-  async patchUpdate(id: number, patchUpdateSportDto: PatchUpdateSportDto) {
+  async patch(id: number, updateSportDto: UpdateSportDto) {
     const sport = await this.sportsRepository.findOneBy({ id });
-    sport.isAvailable = patchUpdateSportDto.isAvailable;
+    sport.name = updateSportDto.name;
+    sport.description = updateSportDto.description;
+    sport.isAvailable = updateSportDto.isAvailable;
+    sport.startDate = updateSportDto.startDate;
+    sport.endDate = updateSportDto.endDate;
 
-    await this.entityManager.save(sport);
+    return await this.entityManager.save(sport);
   }
 
   async update(id: number, updateSportDto: UpdateSportDto) {
@@ -39,6 +42,8 @@ export class SportsService {
     sport.name = updateSportDto.name;
     sport.description = updateSportDto.description;
     sport.isAvailable = updateSportDto.isAvailable;
+    sport.startDate = updateSportDto.startDate;
+    sport.endDate = updateSportDto.endDate;
 
     return await this.entityManager.save(sport);
   }

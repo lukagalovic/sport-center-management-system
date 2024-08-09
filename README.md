@@ -1,6 +1,6 @@
 Requirements: docker desktop
 
-Start:
+Start (zasad, implementirat dockerfile):
 
 1. docker-compose up
 2. npm run start

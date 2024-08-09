@@ -11,7 +11,6 @@ import {
 import { SportsService } from './sports.service';
 import { CreateSportDto } from './dto/create-sport.dto';
 import { UpdateSportDto } from './dto/update-sport.dto';
-import { PatchUpdateSportDto } from './dto/patch-update-sport.dto';
 
 @Controller('sports')
 export class SportsController {
@@ -35,9 +34,9 @@ export class SportsController {
   @Patch(':id')
   async patchUpdate(
     @Param('id') id: string,
-    @Body() patchUpdateSportDto: PatchUpdateSportDto,
+    @Body() updateSportDto: UpdateSportDto,
   ) {
-    return await this.sportsService.patchUpdate(+id, patchUpdateSportDto);
+    return await this.sportsService.patch(+id, updateSportDto);
   }
 
   @Put(':id')
