@@ -1,16 +1,9 @@
-import {
-  BeforeInsert,
-  BeforeUpdate,
-  Column,
-  Entity,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Class } from 'src/classes/entities/class.entity';
+import { AbstractEntity } from 'src/database/abstract.entity';
+import { Column, Entity, OneToMany } from 'typeorm';
 
 @Entity()
-export class Sport {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Sport extends AbstractEntity<Sport> {
   @Column()
   name: string;
 
@@ -20,34 +13,6 @@ export class Sport {
   @Column({ default: true })
   isAvailable: boolean;
 
-  @Column({ type: 'date' })
-  startDate: Date;
-
-  @Column({ type: 'date' })
-  endDate: Date;
-
-  @Column({ type: 'int' })
-  duration: number;
-
-  constructor(sport: Partial<Sport>) {
-    Object.assign(this, sport);
-  }
-
-  @BeforeInsert()
-  @BeforeUpdate()
-  calculateDuration() {
-    if (this.startDate && this.endDate) {
-      const startDate = new Date(this.startDate);
-      const endDate = new Date(this.endDate);
-
-      if (startDate.getTime && endDate.getTime) {
-        const diffInMilliseconds = endDate.getTime() - startDate.getTime();
-        this.duration = diffInMilliseconds / (1000 * 60 * 60 * 24);
-      } else {
-        throw new Error('Invalid date format');
-      }
-    } else {
-      this.duration = 0;
-    }
-  }
+  @OneToMany(() => Class, (item) => item.sport)
+  classes: Class[];
 }

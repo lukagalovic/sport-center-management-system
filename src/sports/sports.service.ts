@@ -31,8 +31,6 @@ export class SportsService {
     sport.name = updateSportDto.name;
     sport.description = updateSportDto.description;
     sport.isAvailable = updateSportDto.isAvailable;
-    sport.startDate = updateSportDto.startDate;
-    sport.endDate = updateSportDto.endDate;
 
     return await this.entityManager.save(sport);
   }
@@ -42,8 +40,6 @@ export class SportsService {
     sport.name = updateSportDto.name;
     sport.description = updateSportDto.description;
     sport.isAvailable = updateSportDto.isAvailable;
-    sport.startDate = updateSportDto.startDate;
-    sport.endDate = updateSportDto.endDate;
 
     return await this.entityManager.save(sport);
   }
