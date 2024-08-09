@@ -25,14 +25,14 @@ export class UpdateClassDto extends PartialType(CreateClassDto) {
 
   @ApiProperty({
     description: 'The start date of the class',
-    example: '2024-10-01T10:00:00Z',
+    example: '2024-10-01',
     type: String,
   })
   startDate?: Date;
 
   @ApiProperty({
     description: 'The end date of the class',
-    example: '2024-10-01T12:00:00Z',
+    example: '2024-10-01',
     type: String,
     required: false,
   })
@@ -40,7 +40,8 @@ export class UpdateClassDto extends PartialType(CreateClassDto) {
 
   @ApiProperty({
     description: 'The sport associated with the class',
-    type: Sport, // Ensure Sport entity is correctly imported and used
+    type: Sport,
+    example: '{"id": 1}',
     required: true,
   })
   sport?: Sport;

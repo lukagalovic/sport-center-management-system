@@ -19,11 +19,16 @@ export class ClassesService {
   }
 
   async findAll() {
-    return await this.classRepository.find();
+    return await this.classRepository.find({
+      relations: ['sport'],
+    });
   }
 
   async findOne(id: number) {
-    return await this.classRepository.findOneBy({ id });
+    return await this.classRepository.findOne({
+      where: { id },
+      relations: ['sport'],
+    });
   }
 
   async patch(id: number, updateClassDto: UpdateClassDto) {
@@ -32,6 +37,7 @@ export class ClassesService {
     item.description = updateClassDto.description;
     item.startDate = updateClassDto.startDate;
     item.endDate = updateClassDto.endDate;
+    item.sport = updateClassDto.sport;
 
     return await this.entityManager.save(item);
   }
@@ -42,11 +48,12 @@ export class ClassesService {
     item.description = updateClassDto.description;
     item.startDate = updateClassDto.startDate;
     item.endDate = updateClassDto.endDate;
+    item.sport = updateClassDto.sport;
 
     return await this.entityManager.save(item);
   }
 
   async remove(id: number) {
-    return this.classRepository.delete(id);
+    return await this.classRepository.delete(id);
   }
 }

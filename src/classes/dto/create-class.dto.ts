@@ -32,6 +32,7 @@ export class CreateClassDto {
 
   @ApiProperty({
     description: 'The sport that is taught in the class',
+    example: '{"id": 1}',
     type: Sport,
   })
   sport: Sport;

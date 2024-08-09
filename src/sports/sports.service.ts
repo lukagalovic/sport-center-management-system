@@ -45,6 +45,6 @@ export class SportsService {
   }
 
   async remove(id: number) {
-    return this.sportsRepository.delete(id);
+    return await this.sportsRepository.delete(id);
   }
 }

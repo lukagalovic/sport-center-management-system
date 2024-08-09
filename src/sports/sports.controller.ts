@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   Put,
+  NotFoundException,
 } from '@nestjs/common';
 import { SportsService } from './sports.service';
 import { CreateSportDto } from './dto/create-sport.dto';
@@ -30,7 +31,9 @@ export class SportsController {
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return await this.sportsService.findOne(+id);
+    const sport = await this.sportsService.findOne(+id);
+    if (!sport) throw new NotFoundException(`Sport with ID ${id} not found`);
+    return sport;
   }
 
   @Patch(':id')
@@ -51,6 +54,9 @@ export class SportsController {
 
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    return await this.sportsService.remove(+id);
+    const sport = await this.sportsService.remove(+id);
+    if (!sport.affected)
+      throw new NotFoundException(`Sport with ID ${id} not found`);
+    return sport;
   }
 }
