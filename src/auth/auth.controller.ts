@@ -12,10 +12,10 @@ import { JwtAuthGuard } from './guards/jwt.guard';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  // @Post('register')
-  // async register(@Body() loginUserDto: LoginUserDto) {
-  //   return this.authService.register(registerUserDto);
-  // }
+  @Post('register')
+  async register(@Body() registerUserDto: RegisterUserDto) {
+    return await this.authService.register(registerUserDto);
+  }
 
   @Post('login')
   @UseGuards(LocalGuard)

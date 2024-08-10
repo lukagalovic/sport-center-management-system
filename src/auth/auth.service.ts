@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { LoginUserDto } from './dto/login-user.dto';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { User } from 'src/users/entities/user.entity';
@@ -11,6 +11,7 @@ export class AuthService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    private readonly entityManager: EntityManager,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -27,11 +28,8 @@ export class AuthService {
     }
   }
 
-  login(loginUserDto: LoginUserDto) {
-    return 'This action adds a new auth';
-  }
-
-  register(registerUserDto: RegisterUserDto) {
-    return 'This action adds a new auth';
+  async register(registerUserDto: RegisterUserDto) {
+    const user = new User(registerUserDto);
+    return await this.entityManager.save(user);
   }
 }
