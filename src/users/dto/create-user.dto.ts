@@ -15,6 +15,12 @@ export class CreateUserDto {
   lastName: string;
 
   @ApiProperty({
+    description: 'Username of user',
+    example: 'iivic',
+  })
+  username: string;
+
+  @ApiProperty({
     description: 'Email address of the user ',
     example: 'ivan.ivic@gmail.com',
   })

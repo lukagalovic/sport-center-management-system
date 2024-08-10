@@ -12,6 +12,9 @@ export class User extends AbstractEntity<User> {
   lastName: string;
 
   @Column()
+  username: string;
+
+  @Column()
   email: string;
 
   @Column()
