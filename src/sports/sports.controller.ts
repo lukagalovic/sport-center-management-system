@@ -9,6 +9,7 @@ import {
   Put,
   NotFoundException,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import { SportsService } from './sports.service';
 import { CreateSportDto } from './dto/create-sport.dto';
@@ -17,6 +18,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Request } from 'express';
 
 @ApiTags('Sports')
 @ApiBearerAuth()
@@ -66,4 +68,19 @@ export class SportsController {
       throw new NotFoundException(`Sport with ID ${id} not found`);
     return sport;
   }
+
+  //   @Roles('user')
+  //   @Post(':id/apply')
+  //   async applyForClass(@Param('id') id: string, @Req() req: RequestWithUser) {
+  //     const userId = req.user.userId; // Get the logged-in user's ID from the request
+  //     return await this.sportsService.applyForClass(+id, userId);
+  //   }
+  // }
+
+  // export interface RequestWithUser extends Request {
+  //   user: {
+  //     userId: number;
+  //     username: string;
+  //     role: string;
+  //   };
 }

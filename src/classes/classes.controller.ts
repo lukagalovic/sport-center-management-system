@@ -9,6 +9,8 @@ import {
   Put,
   NotFoundException,
   UseGuards,
+  Query,
+  Req,
 } from '@nestjs/common';
 import { ClassesService } from './classes.service';
 import { CreateClassDto } from './dto/create-class.dto';
@@ -16,6 +18,7 @@ import { UpdateClassDto } from './dto/update-class.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { GetUserAuthInfoRequest } from 'src/shared/GetUserAuthInfoRequest';
 
 @ApiTags('Classes')
 @ApiBearerAuth()
@@ -23,15 +26,15 @@ import { RolesGuard } from 'src/auth/guards/roles.guard';
 @Controller('classes')
 export class ClassesController {
   constructor(private readonly classesService: ClassesService) {}
-
   @Post()
   async create(@Body() createClassDto: CreateClassDto) {
     return await this.classesService.create(createClassDto);
   }
 
   @Get()
-  async findAll() {
-    return await this.classesService.findAll();
+  async findAll(@Query('sports') sports?: string) {
+    const filter = sports ? { sports: sports.split(',') } : {};
+    return await this.classesService.findAll(filter);
   }
 
   @Get(':id')
@@ -62,8 +65,14 @@ export class ClassesController {
     return result;
   }
 
-  // @Post('id/enroll')
-  // async enroll(@Param('id') classId: string, @Req() req: Request){
-  //   const userId = req.user.sub;
-  // }
+  @Post(':id/apply')
+  async applyForClass(
+    @Param('id') id: number,
+    @Req() req: GetUserAuthInfoRequest,
+  ) {
+    const userId = req.user.id; // Assumes you've extracted userId from JWT
+    return await this.classesService.applyForClass(+id, userId);
+  }
+
+  // Helper
 }

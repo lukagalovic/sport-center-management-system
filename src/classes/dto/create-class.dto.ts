@@ -31,6 +31,15 @@ export class CreateClassDto {
   endDate: Date;
 
   @ApiProperty({
+    description: 'The week schedule of class',
+    example: [
+      { day: 'Monday', time: '18:00' },
+      { day: 'Friday', time: '15:00' },
+    ],
+  })
+  schedule: { day: string; time: string }[];
+
+  @ApiProperty({
     description: 'The sport that is taught in the class',
     example: '{"id": 1}',
     type: Sport,

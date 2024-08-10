@@ -27,6 +27,9 @@ export class Class extends AbstractEntity<Class> {
   @Column({ type: 'int' })
   duration: number;
 
+  @Column('json')
+  schedule: { day: string; time: string }[];
+
   @ManyToOne(() => Sport, (sport) => sport.classes)
   sport: Sport;
 

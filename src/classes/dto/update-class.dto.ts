@@ -39,6 +39,15 @@ export class UpdateClassDto extends PartialType(CreateClassDto) {
   endDate?: Date;
 
   @ApiProperty({
+    description: 'The week schedule of class',
+    example: [
+      { day: 'Monday', time: '18:00' },
+      { day: 'Friday', time: '15:00' },
+    ],
+  })
+  schedule: { day: string; time: string }[];
+
+  @ApiProperty({
     description: 'The sport associated with the class',
     type: Sport,
     example: '{"id": 1}',
