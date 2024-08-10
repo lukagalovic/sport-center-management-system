@@ -21,24 +21,24 @@ export class ClassesController {
 
   @Post()
   async create(@Body() createClassDto: CreateClassDto) {
-    return await this.classesService.create(createClassDto);
+    await this.classesService.create(createClassDto);
   }
 
   @Get()
   async findAll() {
-    return this.classesService.findAll();
+    return await this.classesService.findAll();
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    const result = this.classesService.findOne(+id);
+    const result = await this.classesService.findOne(+id);
     if (!result) throw new NotFoundException(`Class with ID ${id} not found`);
     return result;
   }
 
   @Patch(':id')
   async patch(@Param('id') id: string, @Body() updateClassDto: UpdateClassDto) {
-    return this.classesService.update(+id, updateClassDto);
+    return await this.classesService.update(+id, updateClassDto);
   }
 
   @Put(':id')

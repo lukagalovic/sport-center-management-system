@@ -15,7 +15,7 @@ export class ClassesService {
 
   async create(createClassDto: CreateClassDto) {
     const item = new Class(createClassDto);
-    await this.entityManager.save(item);
+    return (await this.entityManager.save(item)).id;
   }
 
   async findAll() {
@@ -39,7 +39,7 @@ export class ClassesService {
     item.endDate = updateClassDto.endDate;
     item.sport = updateClassDto.sport;
 
-    return await this.entityManager.save(item);
+    return (await this.entityManager.save(item)).id;
   }
 
   async update(id: number, updateClassDto: UpdateClassDto) {
@@ -50,7 +50,7 @@ export class ClassesService {
     item.endDate = updateClassDto.endDate;
     item.sport = updateClassDto.sport;
 
-    return await this.entityManager.save(item);
+    return (await this.entityManager.save(item)).id;
   }
 
   async remove(id: number) {

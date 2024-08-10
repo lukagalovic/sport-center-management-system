@@ -15,7 +15,7 @@ export class SportsService {
 
   async create(createSportDto: CreateSportDto) {
     const sport = new Sport(createSportDto);
-    await this.entityManager.save(sport);
+    return await this.entityManager.save(sport);
   }
 
   async findAll() {
@@ -32,7 +32,7 @@ export class SportsService {
     sport.description = updateSportDto.description;
     sport.isAvailable = updateSportDto.isAvailable;
 
-    return await this.entityManager.save(sport);
+    return (await this.entityManager.save(sport)).id;
   }
 
   async update(id: number, updateSportDto: UpdateSportDto) {
