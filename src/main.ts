@@ -10,6 +10,7 @@ async function bootstrap() {
     .setTitle('Valere Sports Center API')
     .setDescription('Valere Sports Center API description')
     .setVersion('1.0')
+    .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' })
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document, {

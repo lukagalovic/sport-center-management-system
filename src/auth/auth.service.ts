@@ -5,6 +5,7 @@ import { User } from 'src/users/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
+import { access } from 'fs';
 
 @Injectable()
 export class AuthService {
@@ -16,16 +17,31 @@ export class AuthService {
   ) {}
 
   async validateUser({ username, password }: LoginUserDto) {
-    const result = await this.userRepository.findOneBy({
-      username: username,
+    const user = await this.userRepository.findOne({
+      where: { username },
+      relations: ['role'],
     });
 
-    if (!result) return;
+    if (!user || user.password !== password) return;
 
-    if (password === result.password) {
-      const { password, ...user } = result;
-      return await this.jwtService.signAsync(user);
-    }
+    const { password: _, ...userData } = user;
+    return userData;
+
+    // if (!result) return;
+
+    // if (password === result.password) {
+    //   const { password, ...user } = result;
+    //   return await this.jwtService.signAsync(user);
+  }
+
+  async login(user: User) {
+    const payload = {
+      sub: user.id,
+      username: user.username,
+      role: user.role.name,
+    };
+
+    return await this.jwtService.signAsync(payload);
   }
 
   async register(registerUserDto: RegisterUserDto) {

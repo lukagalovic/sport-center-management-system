@@ -1,13 +1,23 @@
-import { Controller, Post, Body, UseGuards, Get, Req } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  UseGuards,
+  Get,
+  Req,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginUserDto } from './dto/login-user.dto';
 import { RegisterUserDto } from './dto/register-user.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { LocalGuard } from './guards/local.guard';
 import { Request } from 'express';
 import { JwtAuthGuard } from './guards/jwt.guard';
+import { User } from 'src/users/entities/user.entity';
 
 @ApiTags('Auth')
+@ApiBearerAuth()
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -17,10 +27,18 @@ export class AuthController {
     return await this.authService.register(registerUserDto);
   }
 
+  // @Post('login')
+  // @UseGuards(LocalGuard)
+  // async login(@Req() req: Request, @Body() loginUserDto: LoginUserDto) {
+  //   return req.user;
+  // }
+
   @Post('login')
   @UseGuards(LocalGuard)
-  async login(@Req() req: Request, @Body() loginUserDto: LoginUserDto) {
-    return req.user;
+  async login(@Body() loginUserDto: LoginUserDto) {
+    const user = new User(await this.authService.validateUser(loginUserDto));
+    if (!user) throw new UnauthorizedException('Invalid credentials');
+    return this.authService.login(user);
   }
 
   @Get('status')

@@ -8,13 +8,18 @@ import {
   Delete,
   Put,
   NotFoundException,
+  UseGuards,
 } from '@nestjs/common';
 import { ClassesService } from './classes.service';
 import { CreateClassDto } from './dto/create-class.dto';
 import { UpdateClassDto } from './dto/update-class.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
 
 @ApiTags('Classes')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('classes')
 export class ClassesController {
   constructor(private readonly classesService: ClassesService) {}
@@ -56,4 +61,9 @@ export class ClassesController {
       throw new NotFoundException(`Class with ID ${id} not found`);
     return result;
   }
+
+  // @Post('id/enroll')
+  // async enroll(@Param('id') classId: string, @Req() req: Request){
+  //   const userId = req.user.sub;
+  // }
 }
