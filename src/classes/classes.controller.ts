@@ -19,10 +19,12 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { GetUserAuthInfoRequest } from 'src/shared/GetUserAuthInfoRequest';
+import { Roles } from 'src/auth/decorators/roles.decorator';
 
 @ApiTags('Classes')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard, RolesGuard)
+@Roles('admin')
 @Controller('classes')
 export class ClassesController {
   constructor(private readonly classesService: ClassesService) {}
@@ -31,12 +33,14 @@ export class ClassesController {
     return await this.classesService.create(createClassDto);
   }
 
+  @Roles('admin', 'user')
   @Get()
   async findAll(@Query('sports') sports?: string) {
     const filter = sports ? { sports: sports.split(',') } : {};
     return await this.classesService.findAll(filter);
   }
 
+  @Roles('admin', 'user')
   @Get(':id')
   async findOne(@Param('id') id: string) {
     const result = await this.classesService.findOne(+id);
@@ -65,14 +69,13 @@ export class ClassesController {
     return result;
   }
 
+  @Roles('user')
   @Post(':id/apply')
   async applyForClass(
     @Param('id') id: number,
     @Req() req: GetUserAuthInfoRequest,
   ) {
-    const userId = req.user.id; // Assumes you've extracted userId from JWT
+    const userId = req.user.id;
     return await this.classesService.applyForClass(+id, userId);
   }
-
-  // Helper
 }
