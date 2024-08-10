@@ -28,18 +28,14 @@ export class SportsService {
 
   async patch(id: number, updateSportDto: UpdateSportDto) {
     const sport = await this.sportsRepository.findOneBy({ id });
-    sport.name = updateSportDto.name;
-    sport.description = updateSportDto.description;
-    sport.isAvailable = updateSportDto.isAvailable;
+    Object.assign(sport, { ...updateSportDto });
 
-    return (await this.entityManager.save(sport)).id;
+    return await this.entityManager.save(sport);
   }
 
   async update(id: number, updateSportDto: UpdateSportDto) {
     const sport = await this.sportsRepository.findOneBy({ id });
-    sport.name = updateSportDto.name;
-    sport.description = updateSportDto.description;
-    sport.isAvailable = updateSportDto.isAvailable;
+    Object.assign(sport, { ...updateSportDto });
 
     return await this.entityManager.save(sport);
   }

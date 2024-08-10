@@ -1,4 +1,4 @@
-Requirements: docker desktop
+Requirements: Docker Desktop (running)
 
 Start (zasad, implementirat dockerfile):
 

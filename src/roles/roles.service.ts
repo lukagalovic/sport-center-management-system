@@ -28,16 +28,15 @@ export class RolesService {
 
   async update(id: number, updateRoleDto: UpdateRoleDto) {
     const role = await this.roleRepository.findOneBy({ id });
-    role.name = updateRoleDto.name;
-    role.description = updateRoleDto.description;
+    Object.assign(role, { ...updateRoleDto });
 
     return await this.entityManager.save(role);
+    // role.users = updateRoleDto.users.map((createUserDto) => new User(createUserDto))
   }
 
   async patch(id: number, updateRoleDto: UpdateRoleDto) {
     const role = await this.roleRepository.findOneBy({ id });
-    role.name = updateRoleDto.name;
-    role.description = updateRoleDto.description;
+    Object.assign(role, { ...updateRoleDto });
 
     return await this.entityManager.save(role);
   }

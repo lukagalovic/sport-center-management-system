@@ -15,7 +15,7 @@ export class ClassesService {
 
   async create(createClassDto: CreateClassDto) {
     const item = new Class(createClassDto);
-    return (await this.entityManager.save(item)).id;
+    return await this.entityManager.save(item);
   }
 
   async findAll() {
@@ -33,24 +33,16 @@ export class ClassesService {
 
   async patch(id: number, updateClassDto: UpdateClassDto) {
     const item = await this.classRepository.findOneBy({ id });
-    item.name = updateClassDto.name;
-    item.description = updateClassDto.description;
-    item.startDate = updateClassDto.startDate;
-    item.endDate = updateClassDto.endDate;
-    item.sport = updateClassDto.sport;
+    Object.assign(item, { ...updateClassDto });
 
-    return (await this.entityManager.save(item)).id;
+    return await this.entityManager.save(item);
   }
 
   async update(id: number, updateClassDto: UpdateClassDto) {
     const item = await this.classRepository.findOneBy({ id });
-    item.name = updateClassDto.name;
-    item.description = updateClassDto.description;
-    item.startDate = updateClassDto.startDate;
-    item.endDate = updateClassDto.endDate;
-    item.sport = updateClassDto.sport;
+    Object.assign(item, { ...updateClassDto });
 
-    return (await this.entityManager.save(item)).id;
+    return await this.entityManager.save(item);
   }
 
   async remove(id: number) {

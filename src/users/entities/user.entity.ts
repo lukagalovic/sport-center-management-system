@@ -1,6 +1,7 @@
+import { Class } from 'src/classes/entities/class.entity';
 import { AbstractEntity } from 'src/database/abstract.entity';
 import { Role } from 'src/roles/entities/role.entity';
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne } from 'typeorm';
 
 @Entity()
 export class User extends AbstractEntity<User> {
@@ -18,4 +19,8 @@ export class User extends AbstractEntity<User> {
 
   @ManyToOne(() => Role, (role) => role.users)
   role: Role;
+
+  @ManyToMany(() => Class, (cls) => cls.users)
+  @JoinTable()
+  classes: Class[];
 }

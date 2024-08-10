@@ -33,22 +33,14 @@ export class UsersService {
 
   async patch(id: number, updateUserDto: UpdateUserDto) {
     const user = await this.usersRepository.findOneBy({ id });
-    user.firstName = updateUserDto.firstName;
-    user.lastName = updateUserDto.lastName;
-    user.email = updateUserDto.email;
-    user.password = updateUserDto.password;
-    user.role = updateUserDto.role;
+    Object.assign(user, { ...updateUserDto });
 
     return await this.entityManager.save(user);
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
     const user = await this.usersRepository.findOneBy({ id });
-    user.firstName = updateUserDto.firstName;
-    user.lastName = updateUserDto.lastName;
-    user.email = updateUserDto.email;
-    user.password = updateUserDto.password;
-    user.role = updateUserDto.role;
+    Object.assign(user, { ...updateUserDto });
 
     return await this.entityManager.save(user);
   }

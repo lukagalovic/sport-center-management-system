@@ -1,6 +1,14 @@
 import { AbstractEntity } from 'src/database/abstract.entity';
 import { Sport } from 'src/sports/entities/sport.entity';
-import { BeforeInsert, BeforeUpdate, Column, Entity, ManyToOne } from 'typeorm';
+import { User } from 'src/users/entities/user.entity';
+import {
+  BeforeInsert,
+  BeforeUpdate,
+  Column,
+  Entity,
+  ManyToMany,
+  ManyToOne,
+} from 'typeorm';
 
 @Entity()
 export class Class extends AbstractEntity<Class> {
@@ -21,6 +29,9 @@ export class Class extends AbstractEntity<Class> {
 
   @ManyToOne(() => Sport, (sport) => sport.classes)
   sport: Sport;
+
+  @ManyToMany(() => User, (user) => user.classes)
+  users: User[];
 
   @BeforeInsert()
   @BeforeUpdate()
