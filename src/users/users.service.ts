@@ -19,11 +19,16 @@ export class UsersService {
   }
 
   async findAll() {
-    return await this.usersRepository.find();
+    return await this.usersRepository.find({
+      relations: ['role'],
+    });
   }
 
   async findOne(id: number) {
-    return await this.usersRepository.findOneBy({ id });
+    return await this.usersRepository.findOne({
+      where: { id },
+      relations: ['role'],
+    });
   }
 
   async patch(id: number, updateUserDto: UpdateUserDto) {
@@ -32,6 +37,7 @@ export class UsersService {
     user.lastName = updateUserDto.lastName;
     user.email = updateUserDto.email;
     user.password = updateUserDto.password;
+    user.role = updateUserDto.role;
 
     return await this.entityManager.save(user);
   }
@@ -42,6 +48,7 @@ export class UsersService {
     user.lastName = updateUserDto.lastName;
     user.email = updateUserDto.email;
     user.password = updateUserDto.password;
+    user.role = updateUserDto.role;
 
     return await this.entityManager.save(user);
   }

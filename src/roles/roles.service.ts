@@ -19,17 +19,10 @@ export class RolesService {
   }
 
   async findAll() {
-    // return await this.roleRepository.find({
-    //   relations: ['user'],
-    // });
     return await this.roleRepository.find();
   }
 
   async findOne(id: number) {
-    // return await this.roleRepository.findOne({
-    //   where: { id },
-    //   relations: ['sport'],
-    // });
     return await this.roleRepository.findOneBy({ id });
   }
 

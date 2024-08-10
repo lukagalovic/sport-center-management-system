@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Role } from 'src/roles/entities/role.entity';
 
 export class CreateUserDto {
   @ApiProperty({
@@ -24,4 +25,11 @@ export class CreateUserDto {
     example: 'secretKey',
   })
   password: string;
+
+  @ApiProperty({
+    description: 'The role of user.',
+    example: '{"id": 1}',
+    type: Role,
+  })
+  role: Role;
 }
