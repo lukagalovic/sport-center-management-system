@@ -17,8 +17,12 @@ WORKDIR /usr/src/app
 
 COPY --from=build /usr/src/app/dist ./dist
 COPY --from=build /usr/src/app/node_modules ./node_modules
+COPY --from=build /usr/src/app/migrations ./migrations
 COPY --from=build /usr/src/app/.env ./.env
+COPY --from=build /usr/src/app/package*.json ./
+COPY --from=build /usr/src/app/typeOrm.config.ts ./typeOrm.config.ts
+COPY --from=build /usr/src/app/typeOrm.config.js ./typeOrm.config.js
 
 EXPOSE 3000
 
-CMD ["node", "dist/main"]
+CMD ["sh", "-c", "npm run typeorm:run-migrations && node dist/src/main"]
