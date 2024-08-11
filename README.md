@@ -76,3 +76,9 @@
 
 - **Endpoint**: `POST /classes/{id}/apply`
 - **Description**: Only users can apply for a class.
+
+## TODO
+
+- **Unit tests**
+- **Integration tests**
+- **CI/CD pipeline**
