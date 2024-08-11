@@ -28,9 +28,9 @@
 
 1. To stop the application and remove the containers, you can use the following command:
 
-```bash
-docker-compose down
-```
+   ```bash
+   docker-compose down
+   ```
 
 2. If you want to remove the volumes (which includes the database data) as well, use:
 
