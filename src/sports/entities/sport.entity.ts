@@ -13,6 +13,6 @@ export class Sport extends AbstractEntity<Sport> {
   @Column({ default: true })
   isAvailable: boolean;
 
-  @OneToMany(() => Class, (item) => item.sport)
+  @OneToMany(() => Class, (cls) => cls.sport)
   classes: Class[];
 }

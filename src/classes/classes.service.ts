@@ -21,8 +21,8 @@ export class ClassesService {
   ) {}
 
   async create(createClassDto: CreateClassDto) {
-    const item = new Class(createClassDto);
-    return await this.entityManager.save(item);
+    const cls = new Class(createClassDto);
+    return await this.entityManager.save(cls);
   }
 
   async findAll(filter?: { sports?: string[] }) {
@@ -47,17 +47,17 @@ export class ClassesService {
   }
 
   async patch(id: number, updateClassDto: UpdateClassDto) {
-    const item = await this.classRepository.findOneBy({ id });
-    Object.assign(item, { ...updateClassDto });
+    const cls = await this.classRepository.findOneBy({ id });
+    Object.assign(cls, { ...updateClassDto });
 
-    return await this.entityManager.save(item);
+    return await this.entityManager.save(cls);
   }
 
   async update(id: number, updateClassDto: UpdateClassDto) {
-    const item = await this.classRepository.findOneBy({ id });
-    Object.assign(item, { ...updateClassDto });
+    const cls = await this.classRepository.findOneBy({ id });
+    Object.assign(cls, { ...updateClassDto });
 
-    return await this.entityManager.save(item);
+    return await this.entityManager.save(cls);
   }
 
   async remove(id: number) {

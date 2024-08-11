@@ -15,7 +15,7 @@ import {
 import { ClassesService } from './classes.service';
 import { CreateClassDto } from './dto/create-class.dto';
 import { UpdateClassDto } from './dto/update-class.dto';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { GetUserAuthInfoRequest } from 'src/shared/GetUserAuthInfoRequest';
@@ -34,6 +34,13 @@ export class ClassesController {
   }
 
   @Roles('admin', 'user')
+  @ApiQuery({
+    name: 'sports',
+    required: false,
+    description: 'Comma-separated list of sports to filter by',
+    type: String,
+    example: 'Football,Basketball',
+  })
   @Get()
   async findAll(@Query('sports') sports?: string) {
     const filter = sports ? { sports: sports.split(',') } : {};
