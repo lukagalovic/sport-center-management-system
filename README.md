@@ -18,6 +18,26 @@
    http://localhost:3000/api
    ```
 
+3. Stop the application and containers using Docker Compose:
+
+   ```bash
+   docker-compose up --build
+   ```
+
+## Termination
+
+1. To stop the application and remove the containers, you can use the following command:
+
+```bash
+docker-compose down
+```
+
+2. If you want to remove the volumes (which includes the database data) as well, use:
+
+   ```bash
+   docker-compose down -v
+   ```
+
 ## Application Flow
 
 ### On Build
