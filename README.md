@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-- Docker Desktop
+- [Docker Desktop](https://www.docker.com/products/docker-desktop) - Download and install Docker Desktop.
 
 ## Getting Started
 
