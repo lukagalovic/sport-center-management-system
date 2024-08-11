@@ -15,7 +15,14 @@ import {
 import { ClassesService } from './classes.service';
 import { CreateClassDto } from './dto/create-class.dto';
 import { UpdateClassDto } from './dto/update-class.dto';
-import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiParam,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { GetUserAuthInfoRequest } from 'src/shared/GetUserAuthInfoRequest';
@@ -28,12 +35,56 @@ import { Roles } from 'src/auth/decorators/roles.decorator';
 @Controller('classes')
 export class ClassesController {
   constructor(private readonly classesService: ClassesService) {}
+
   @Post()
+  @ApiResponse({
+    status: 200,
+    description: 'OK',
+    schema: {
+      example: {
+        message: 'OK',
+        statusCode: 200,
+      },
+    },
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized',
+    schema: {
+      example: {
+        message: 'Unauthorized',
+        statusCode: 401,
+      },
+    },
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'Forbidden',
+    schema: {
+      example: {
+        message: 'You do not have permission to access this resource',
+        error: 'Forbidden',
+        statusCode: 403,
+      },
+    },
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal Server Error',
+    schema: {
+      example: {
+        message: 'Internal server error',
+        error: 'Internal Server Error',
+        statusCode: 500,
+      },
+    },
+  })
   async create(@Body() createClassDto: CreateClassDto) {
     return await this.classesService.create(createClassDto);
   }
 
   @Roles('admin', 'user')
+  @Get()
   @ApiQuery({
     name: 'sports',
     required: false,
@@ -41,7 +92,48 @@ export class ClassesController {
     type: String,
     example: 'Football,Basketball',
   })
-  @Get()
+  @ApiResponse({
+    status: 200,
+    description: 'OK',
+    schema: {
+      example: {
+        message: 'OK',
+        statusCode: 200,
+      },
+    },
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized',
+    schema: {
+      example: {
+        message: 'Unauthorized',
+        statusCode: 401,
+      },
+    },
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'Forbidden',
+    schema: {
+      example: {
+        message: 'You do not have permission to access this resource',
+        error: 'Forbidden',
+        statusCode: 403,
+      },
+    },
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal Server Error',
+    schema: {
+      example: {
+        message: 'Internal Server Error',
+        error: 'Internal Server Error',
+        statusCode: 500,
+      },
+    },
+  })
   async findAll(@Query('sports') sports?: string) {
     const filter = sports ? { sports: sports.split(',') } : {};
     return await this.classesService.findAll(filter);
@@ -49,6 +141,59 @@ export class ClassesController {
 
   @Roles('admin', 'user')
   @Get(':id')
+  @ApiResponse({
+    status: 200,
+    description: 'OK',
+    schema: {
+      example: {
+        message: 'OK',
+        statusCode: 200,
+      },
+    },
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized',
+    schema: {
+      example: {
+        message: 'Unauthorized',
+        statusCode: 401,
+      },
+    },
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'Forbidden',
+    schema: {
+      example: {
+        message: 'You do not have permission to access this resource',
+        error: 'Forbidden',
+        statusCode: 403,
+      },
+    },
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Not Found',
+    schema: {
+      example: {
+        message: 'Class with ID 1 not found',
+        error: 'Not found',
+        statusCode: 404,
+      },
+    },
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal Server Error',
+    schema: {
+      example: {
+        message: 'Internal Server Error',
+        error: 'Internal Server Error',
+        statusCode: 500,
+      },
+    },
+  })
   async findOne(@Param('id') id: string) {
     const result = await this.classesService.findOne(+id);
     if (!result) throw new NotFoundException(`Class with ID ${id} not found`);
@@ -56,11 +201,117 @@ export class ClassesController {
   }
 
   @Patch(':id')
+  @ApiResponse({
+    status: 200,
+    description: 'OK',
+    schema: {
+      example: {
+        message: 'OK',
+        statusCode: 200,
+      },
+    },
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized',
+    schema: {
+      example: {
+        message: 'Unauthorized',
+        statusCode: 401,
+      },
+    },
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'Forbidden',
+    schema: {
+      example: {
+        message: 'You do not have permission to access this resource',
+        error: 'Forbidden',
+        statusCode: 403,
+      },
+    },
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Not Found',
+    schema: {
+      example: {
+        message: 'Class with ID 1 not found',
+        error: 'Not found',
+        statusCode: 404,
+      },
+    },
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal Server Error',
+    schema: {
+      example: {
+        message: 'Internal Server Error',
+        error: 'Internal Server Error',
+        statusCode: 500,
+      },
+    },
+  })
   async patch(@Param('id') id: string, @Body() updateClassDto: UpdateClassDto) {
     return await this.classesService.update(+id, updateClassDto);
   }
 
   @Put(':id')
+  @ApiResponse({
+    status: 200,
+    description: 'OK',
+    schema: {
+      example: {
+        message: 'OK',
+        statusCode: 200,
+      },
+    },
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized',
+    schema: {
+      example: {
+        message: 'Unauthorized',
+        statusCode: 401,
+      },
+    },
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'Forbidden',
+    schema: {
+      example: {
+        message: 'You do not have permission to access this resource',
+        error: 'Forbidden',
+        statusCode: 403,
+      },
+    },
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Not Found',
+    schema: {
+      example: {
+        message: 'Class with ID 1 not found',
+        error: 'Not found',
+        statusCode: 404,
+      },
+    },
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal Server Error',
+    schema: {
+      example: {
+        message: 'Internal Server Error',
+        error: 'Internal Server Error',
+        statusCode: 500,
+      },
+    },
+  })
   async update(
     @Param('id') id: string,
     @Body() updateClassDto: UpdateClassDto,
@@ -69,20 +320,138 @@ export class ClassesController {
   }
 
   @Delete(':id')
+  @ApiResponse({
+    status: 200,
+    description: 'OK',
+    schema: {
+      example: {
+        message: 'OK',
+        statusCode: 200,
+      },
+    },
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized',
+    schema: {
+      example: {
+        message: 'Unauthorized',
+        statusCode: 401,
+      },
+    },
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'Forbidden',
+    schema: {
+      example: {
+        message: 'You do not have permission to access this resource',
+        error: 'Forbidden',
+        statusCode: 403,
+      },
+    },
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Not Found',
+    schema: {
+      example: {
+        message: 'Class with ID 1 not found',
+        error: 'Not found',
+        statusCode: 404,
+      },
+    },
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal Server Error',
+    schema: {
+      example: {
+        message: 'Internal Server Error',
+        error: 'Internal Server Error',
+        statusCode: 500,
+      },
+    },
+  })
   async remove(@Param('id') id: string) {
-    const result = await this.classesService.remove(+id);
-    if (!result.affected)
-      throw new NotFoundException(`Class with ID ${id} not found`);
-    return result;
+    await this.classesService.remove(+id);
   }
 
   @Roles('user')
   @Post(':id/apply')
+  @ApiParam({
+    name: 'id',
+    type: Number,
+    description: 'ID of the class to apply for',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Created',
+    schema: {
+      example: {
+        message: 'Created',
+        statusCode: 201,
+      },
+    },
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized',
+    schema: {
+      example: {
+        message: 'Unauthorized',
+        statusCode: 401,
+      },
+    },
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'Forbidden',
+    schema: {
+      example: {
+        message: 'You do not have permission to access this resource',
+        error: 'Forbidden',
+        statusCode: 403,
+      },
+    },
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Not Found',
+    schema: {
+      example: {
+        message: 'Class with ID 1 not found',
+        error: 'Not found',
+        statusCode: 404,
+      },
+    },
+  })
+  @ApiResponse({
+    status: 409,
+    description: 'Conflict',
+    schema: {
+      example: {
+        message: 'User with ID 2 is already applied to this class',
+        error: 'Conflict',
+        statusCode: 409,
+      },
+    },
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal Server Error',
+    schema: {
+      example: {
+        message: 'Internal server error',
+        error: 'Internal Server Error',
+        statusCode: 500,
+      },
+    },
+  })
   async applyForClass(
     @Param('id') id: number,
     @Req() req: GetUserAuthInfoRequest,
   ) {
-    const userId = req.user.id;
-    return await this.classesService.applyForClass(+id, userId);
+    return this.classesService.applyForClass(+id, req.user.userId);
   }
 }

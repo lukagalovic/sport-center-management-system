@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateSportDto } from './dto/create-sport.dto';
 import { UpdateSportDto } from './dto/update-sport.dto';
 import { EntityManager, Repository } from 'typeorm';
@@ -26,21 +30,33 @@ export class SportsService {
     return await this.sportsRepository.findOneBy({ id });
   }
 
-  async patch(id: number, updateSportDto: UpdateSportDto) {
+  async update(id: number, updateSportDto: UpdateSportDto) {
     const sport = await this.sportsRepository.findOneBy({ id });
+    if (!sport)
+      throw new NotFoundException(`Sport with ID ${id} does not exist.`);
+
     Object.assign(sport, { ...updateSportDto });
 
     return await this.entityManager.save(sport);
   }
 
-  async update(id: number, updateSportDto: UpdateSportDto) {
+  async patch(id: number, updateSportDto: UpdateSportDto) {
     const sport = await this.sportsRepository.findOneBy({ id });
+    if (!sport)
+      throw new NotFoundException(`Sport with ID ${id} does not exist.`);
+
     Object.assign(sport, { ...updateSportDto });
 
     return await this.entityManager.save(sport);
   }
 
   async remove(id: number) {
-    return await this.sportsRepository.delete(id);
+    const sport = this.sportsRepository.findOneBy({ id });
+    if (!sport)
+      throw new NotFoundException(`Sport with ID ${id} does not exist.`);
+
+    const result = await this.sportsRepository.delete(id);
+    if (!result.affected)
+      throw new InternalServerErrorException(`Internal server error.`);
   }
 }

@@ -22,9 +22,15 @@
 
 ### On Build
 
-- **Database Seeding**: During build, the roles table is seeded with two roles:
+- **Role Seeding**: During build, the roles table is seeded with two roles:
+
   - **admin** (ID: 1)
   - **user** (ID: 2)
+
+- **Sport Seeding**: During build, the sports table is seeded with two roles:
+  - **Football** (ID: 1)
+  - **Basketball** (ID: 2)
+  - **Tennis** (ID: 2)
 
 ### Register
 
@@ -34,7 +40,17 @@
 ### Login
 
 - **Endpoint**: `POST /auth/login`
-- **Description**: Authenticate an existing user and obtain a token. After that authorize inside a swagger with token (without Bearer prefix)
+- **Description**: Authenticate an existing user and obtain a token. After that authorize in swagger with token (without Bearer prefix)
+
+### Create sports
+
+- **Endpoint**: `POST /sports/{id}`
+- **Description**: Only admins can create sports.
+
+### Create class
+
+- **Endpoint**: `POST /classes/{id}`
+- **Description**: Only admins can create class.
 
 ### Apply for Class
 

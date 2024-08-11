@@ -22,7 +22,8 @@ COPY --from=build /usr/src/app/.env ./.env
 COPY --from=build /usr/src/app/package*.json ./
 COPY --from=build /usr/src/app/typeOrm.config.ts ./typeOrm.config.ts
 COPY --from=build /usr/src/app/typeOrm.config.js ./typeOrm.config.js
+COPY start.sh ./
 
 EXPOSE 3000
 
-CMD ["sh", "-c", "npm run typeorm:run-migrations && node dist/src/main"]
+CMD ["sh", "start.sh"]

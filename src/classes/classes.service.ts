@@ -1,6 +1,7 @@
 import {
   ConflictException,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { CreateClassDto } from './dto/create-class.dto';
@@ -42,26 +43,39 @@ export class ClassesService {
   async findOne(id: number) {
     return await this.classRepository.findOne({
       where: { id },
-      relations: ['sport'],
+      relations: ['sport', 'users'],
     });
   }
 
-  async patch(id: number, updateClassDto: UpdateClassDto) {
+  async update(id: number, updateClassDto: UpdateClassDto) {
     const cls = await this.classRepository.findOneBy({ id });
+
+    if (!cls)
+      throw new NotFoundException(`Class with ID ${id} does not exist.`);
+
     Object.assign(cls, { ...updateClassDto });
 
     return await this.entityManager.save(cls);
   }
 
-  async update(id: number, updateClassDto: UpdateClassDto) {
+  async patch(id: number, updateClassDto: UpdateClassDto) {
     const cls = await this.classRepository.findOneBy({ id });
+    if (!cls)
+      throw new NotFoundException(`Class with ID ${id} does not exist.`);
+
     Object.assign(cls, { ...updateClassDto });
 
     return await this.entityManager.save(cls);
   }
 
   async remove(id: number) {
-    return await this.classRepository.delete(id);
+    const cls = this.classRepository.findOneBy({ id });
+    if (!cls)
+      throw new NotFoundException(`Class with ID ${id} does not exist.`);
+
+    const result = await this.classRepository.delete(id);
+    if (!result.affected)
+      throw new InternalServerErrorException(`Internal server error.`);
   }
 
   async applyForClass(classId: number, userId: number) {
@@ -71,13 +85,22 @@ export class ClassesService {
         relations: ['users'],
       });
 
+      if (!cls)
+        throw new NotFoundException(`Class with ID ${classId} does not exist.`);
+
+      if (cls.users.some((user) => user.id === userId))
+        throw new ConflictException(
+          `User with ID ${userId} is already applied to this class`,
+        );
+
       const user = await this.userRepository.findOne({
         where: { id: userId },
       });
+      if (!user) {
+        throw new InternalServerErrorException(`Internal server error.`);
+      }
 
-      Object.assign(cls, {
-        users: [...cls.users, user],
-      });
+      cls.users.push(user);
 
       return await entityManager.save(cls);
     });

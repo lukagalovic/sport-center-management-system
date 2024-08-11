@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -31,21 +35,33 @@ export class UsersService {
     });
   }
 
-  async patch(id: number, updateUserDto: UpdateUserDto) {
+  async update(id: number, updateUserDto: UpdateUserDto) {
     const user = await this.usersRepository.findOneBy({ id });
+    if (!user)
+      throw new NotFoundException(`User with ID ${id} does not exist.`);
+
     Object.assign(user, { ...updateUserDto });
 
     return await this.entityManager.save(user);
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
+  async patch(id: number, updateUserDto: UpdateUserDto) {
     const user = await this.usersRepository.findOneBy({ id });
+    if (!user)
+      throw new NotFoundException(`User with ID ${id} does not exist.`);
+
     Object.assign(user, { ...updateUserDto });
 
     return await this.entityManager.save(user);
   }
 
   async remove(id: number) {
-    return await this.usersRepository.delete(id);
+    const user = this.usersRepository.findOneBy({ id });
+    if (!user)
+      throw new NotFoundException(`User with ID ${id} does not exist.`);
+
+    const result = await this.usersRepository.delete(id);
+    if (!result.affected)
+      throw new InternalServerErrorException(`Internal server error.`);
   }
 }

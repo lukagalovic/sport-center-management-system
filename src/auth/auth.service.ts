@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { LoginUserDto } from './dto/login-user.dto';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { User } from 'src/users/entities/user.entity';
@@ -45,7 +45,19 @@ export class AuthService {
   }
 
   async register(registerUserDto: RegisterUserDto) {
-    const user = new User(registerUserDto);
+    const existingUser = await this.userRepository.findOne({
+      where: [
+        { username: registerUserDto.username },
+        { email: registerUserDto.email },
+      ],
+    });
+
+    if (existingUser)
+      throw new ConflictException(
+        'A user with the same username or email already exists.',
+      );
+
+    const user = this.entityManager.create(User, registerUserDto);
     return await this.entityManager.save(user);
   }
 }

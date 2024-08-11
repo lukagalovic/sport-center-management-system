@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { Role } from './entities/role.entity';
@@ -15,7 +19,7 @@ export class RolesService {
 
   async create(createRoleDto: CreateRoleDto) {
     const role = new Role(createRoleDto);
-    return await this.entityManager.save(role);
+    return await this.roleRepository.save(role);
   }
 
   async findAll() {
@@ -28,20 +32,31 @@ export class RolesService {
 
   async update(id: number, updateRoleDto: UpdateRoleDto) {
     const role = await this.roleRepository.findOneBy({ id });
+    if (!role)
+      throw new NotFoundException(`Role with ID ${id} does not exist.`);
+
     Object.assign(role, { ...updateRoleDto });
 
     return await this.entityManager.save(role);
-    // role.users = updateRoleDto.users.map((createUserDto) => new User(createUserDto))
   }
 
   async patch(id: number, updateRoleDto: UpdateRoleDto) {
     const role = await this.roleRepository.findOneBy({ id });
+    if (!role)
+      throw new NotFoundException(`Role with ID ${id} does not exist.`);
+
     Object.assign(role, { ...updateRoleDto });
 
     return await this.entityManager.save(role);
   }
 
   async remove(id: number) {
-    return await this.roleRepository.delete(id);
+    const role = this.roleRepository.findOneBy({ id });
+    if (!role)
+      throw new NotFoundException(`Role with ID ${id} does not exist.`);
+
+    const result = await this.roleRepository.delete(id);
+    if (!result.affected)
+      throw new InternalServerErrorException(`Internal server error.`);
   }
 }
