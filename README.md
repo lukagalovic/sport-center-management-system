@@ -44,7 +44,7 @@
 - **Sport Seeding**: During build, the sports table is seeded with two roles:
   - **Football** (ID: 1)
   - **Basketball** (ID: 2)
-  - **Tennis** (ID: 2)
+  - **Tennis** (ID: 3)
 
 ### Register
 
