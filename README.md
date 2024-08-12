@@ -41,7 +41,7 @@
   - **admin** (ID: 1)
   - **user** (ID: 2)
 
-- **Sport Seeding**: During build, the sports table is seeded with two roles:
+- **Sport Seeding**: During build, the sports table is seeded with three sports:
   - **Football** (ID: 1)
   - **Basketball** (ID: 2)
   - **Tennis** (ID: 3)
