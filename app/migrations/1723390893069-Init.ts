@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class $npmConfigName1723390893069 implements MigrationInterface {
+export class Init1723390893069 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     const adminRole = await queryRunner.query(
       `SELECT * FROM role WHERE name = 'admin'`,
