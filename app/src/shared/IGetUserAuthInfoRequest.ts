@@ -1,4 +1,4 @@
-export interface GetUserAuthInfoRequest extends Request {
+export interface IGetUserAuthInfoRequest extends Request {
   user: {
     userId: number;
     username: string;

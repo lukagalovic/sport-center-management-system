@@ -26,12 +26,6 @@ export class AuthService {
 
     const { password: _, ...userData } = user;
     return userData;
-
-    // if (!result) return;
-
-    // if (password === result.password) {
-    //   const { password, ...user } = result;
-    //   return await this.jwtService.signAsync(user);
   }
 
   async login(user: User) {

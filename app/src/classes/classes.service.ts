@@ -23,7 +23,7 @@ export class ClassesService {
 
   async create(createClassDto: CreateClassDto) {
     const cls = new Class(createClassDto);
-    return await this.entityManager.save(cls);
+    return await this.userRepository.save(cls);
   }
 
   async findAll(filter?: { sports?: string[] }) {
@@ -55,7 +55,7 @@ export class ClassesService {
 
     Object.assign(cls, { ...updateClassDto });
 
-    return await this.entityManager.save(cls);
+    return await this.userRepository.save(cls);
   }
 
   async patch(id: number, updateClassDto: UpdateClassDto) {
@@ -65,7 +65,7 @@ export class ClassesService {
 
     Object.assign(cls, { ...updateClassDto });
 
-    return await this.entityManager.save(cls);
+    return await this.userRepository.save(cls);
   }
 
   async remove(id: number) {

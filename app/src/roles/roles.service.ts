@@ -7,14 +7,13 @@ import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { Role } from './entities/role.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, EntityManager } from 'typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class RolesService {
   constructor(
     @InjectRepository(Role)
-    private readonly roleRepository: Repository<Role>,
-    private readonly entityManager: EntityManager,
+    private readonly roleRepository: Repository<Role>
   ) {}
 
   async create(createRoleDto: CreateRoleDto) {
@@ -37,7 +36,7 @@ export class RolesService {
 
     Object.assign(role, { ...updateRoleDto });
 
-    return await this.entityManager.save(role);
+    return await this.roleRepository.save(role);
   }
 
   async patch(id: number, updateRoleDto: UpdateRoleDto) {
@@ -47,7 +46,7 @@ export class RolesService {
 
     Object.assign(role, { ...updateRoleDto });
 
-    return await this.entityManager.save(role);
+    return await this.roleRepository.save(role);
   }
 
   async remove(id: number) {

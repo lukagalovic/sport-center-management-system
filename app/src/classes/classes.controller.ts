@@ -25,7 +25,7 @@ import {
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
-import { GetUserAuthInfoRequest } from 'src/shared/GetUserAuthInfoRequest';
+import { IGetUserAuthInfoRequest } from 'src/shared/IGetUserAuthInfoRequest';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 
 @ApiTags('Classes')
@@ -450,7 +450,7 @@ export class ClassesController {
   })
   async applyForClass(
     @Param('id') id: number,
-    @Req() req: GetUserAuthInfoRequest,
+    @Req() req: IGetUserAuthInfoRequest,
   ) {
     return this.classesService.applyForClass(+id, req.user.userId);
   }

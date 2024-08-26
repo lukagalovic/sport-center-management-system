@@ -13,13 +13,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 export class SportsService {
   constructor(
     @InjectRepository(Sport)
-    private readonly sportsRepository: Repository<Sport>,
-    private readonly entityManager: EntityManager,
+    private readonly sportsRepository: Repository<Sport>
   ) {}
 
   async create(createSportDto: CreateSportDto) {
     const sport = new Sport(createSportDto);
-    return await this.entityManager.save(sport);
+    return await this.sportsRepository.save(sport);
   }
 
   async findAll() {
@@ -37,7 +36,7 @@ export class SportsService {
 
     Object.assign(sport, { ...updateSportDto });
 
-    return await this.entityManager.save(sport);
+    return await this.sportsRepository.save(sport);
   }
 
   async patch(id: number, updateSportDto: UpdateSportDto) {
@@ -47,7 +46,7 @@ export class SportsService {
 
     Object.assign(sport, { ...updateSportDto });
 
-    return await this.entityManager.save(sport);
+    return await this.sportsRepository.save(sport);
   }
 
   async remove(id: number) {
