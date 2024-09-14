@@ -24,6 +24,6 @@ COPY --from=build /usr/src/app/typeOrm.config.ts ./typeOrm.config.ts
 COPY --from=build /usr/src/app/typeOrm.config.js ./typeOrm.config.js
 COPY start.sh ./
 
-EXPOSE 3000
+EXPOSE 3001
 
 CMD ["sh", "start.sh"]
